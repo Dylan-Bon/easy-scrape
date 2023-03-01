@@ -13,16 +13,16 @@ type requestHandler struct {
 	baseUrl string
 }
 
-func newRequestHandler(saveDir string, baseUrl string) requestHandler {
+func NewRequestHandler(saveDir string, baseUrl string) requestHandler {
 	return requestHandler{
 		saveDir: saveDir,
 		baseUrl: baseUrl,
 	}
 }
 
-// isTLSCertValid checks for a TLS certification against a domain.
-func isTLSCertValid(url string) (bool, error) {
-	url = getDomain(url)
+// IsTLSCertValid checks for a TLS certification against a domain.
+func IsTLSCertValid(url string) (bool, error) {
+	url = GetDomain(url)
 	conn, err := tls.Dial("tcp", url, nil)
 	if err != nil {
 		return false, err
@@ -34,7 +34,7 @@ func isTLSCertValid(url string) (bool, error) {
 	return true, nil
 }
 
-func getDomain(url string) string {
+func GetDomain(url string) string {
 	strings.TrimPrefix(url, "https://")
 	strings.TrimPrefix(url, "http://")
 	strings.TrimPrefix(url, "www.")
@@ -42,8 +42,8 @@ func getDomain(url string) string {
 	return url[0:i]
 }
 
-// downloadFile makes a GET request to baseUrl + path.
-func (r requestHandler) downloadFile(filename string, path string) (statusCode int, err error) {
+// DownloadFile makes a GET request to baseUrl + path.
+func (r requestHandler) DownloadFile(filename string, path string) (statusCode int, err error) {
 	if r.saveDir == "" || r.baseUrl == "" {
 		return 0, nil
 	}
